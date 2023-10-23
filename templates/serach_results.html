@@ -1,0 +1,13 @@
+<h1>Search Results</h1>
+
+<ul>
+  {% for blog in object_list %}
+    <li>
+      {{ blog.title }}
+    </li>
+    <li>
+		{{ blog.content }}
+    </li>
+		<br>
+  {% endfor %}
+</ul>
