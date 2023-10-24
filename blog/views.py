@@ -11,14 +11,23 @@ class HommePagerView(TemplateView):
   
   
 class SearchResultsView(ListView):
-  model = BlogPost
-  template_name = "serach_results.html"
-  def get_queryset(self) -> QuerySet[Any]:
-    query = self.request.GET.get('q')
-    keywords = query.split()
-    for keyword in keywords:
-      object_list = BlogPost.objects.filter(
-      Q(title__icontains=keyword) | Q(content__icontains=keyword)
-      )
-    return object_list
+    model = BlogPost
+    template_name = "serach_results.html"
+
+    def get_queryset(self) -> QuerySet[Any]:
+        query = self.request.GET.get('q')
+        if query is None or query.strip() == "":
+            return BlogPost.objects.all()  # Return all articles if query is empty
+
+        keywords = query.split()
+        object_list = BlogPost.objects.none()
+
+        for keyword in keywords:
+            object_list = object_list | BlogPost.objects.filter(
+                Q(title__icontains=keyword) | Q(content__icontains=keyword)
+            )
+
+        return object_list
+
+
 

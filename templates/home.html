@@ -1,5 +1,36 @@
-<h1>Home  Page</h1>
+{% load static %}
 
-<form action="{% url 'search_results' %}" method="get">
-  <input name="q" type="text" placeholder="Search...">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  {% comment %} <link rel="stylesheet" href="{% url 'css/style.css' %}"> {% endcomment %}
+  <script src="{% static 'js/htmx.min.js' %}" defer></script>
+</head>
+<body>
+  <h1>Home Page</h1>
+
+<form id="searchForm" hx-get="{% url 'search_results' %}" hx-target="#results" hx-swap="outerHTML" hx-trigger="submit">
+  <input id="searchInput" name="q" type="text" placeholder="Search...">
+  <input type="submit" value="Search">
+  <button type="button" id="clearSearch" hx-trigger="click">Clear</button>
 </form>
+
+<div id="results">
+  <!-- The search results will be displayed here -->
+  {% include 'serach_results.html' %}
+</div>
+
+<script>
+  document.getElementById("clearSearch").addEventListener("click", function() {
+    document.getElementById("searchInput").value = "";
+    document.getElementById("searchForm").submit();
+  });
+</script>
+
+
+
+</body>
+</html>
