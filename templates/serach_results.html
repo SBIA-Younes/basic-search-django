@@ -1,5 +1,6 @@
+{% extends "home.html" %}
 {% comment %} <h2>Search Results</h2> {% endcomment %}
-
+{% comment %} 
 <ul>
   {% for blog in object_list %}
     <li>
@@ -10,4 +11,17 @@
     </li>
 		<br>
   {% endfor %}
-</ul>
+</ul> {% endcomment %}
+
+
+{% block content %}
+  <h1>Search Results</h1>
+
+  <ul>
+    {% for blog in blogs %}
+      <li>
+        <a href="{% url 'blog_detail' pk=blog.pk %}">{{ blog.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

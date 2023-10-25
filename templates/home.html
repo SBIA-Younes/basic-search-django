@@ -10,9 +10,9 @@
   <script src="{% static 'js/htmx.min.js' %}" defer></script>
 </head>
 <body>
-  <h1>Home Page</h1>
+  <h1><a href='{% url "homme" %}'>Home Page</a></h1>
 
-<form id="searchForm" hx-get="{% url 'search_results' %}" hx-target="#results" hx-swap="outerHTML" hx-trigger="submit">
+{% comment %} <form id="searchForm" hx-get="{% url 'search_results' %}" hx-target="#results" hx-swap="outerHTML" hx-trigger="submit">
   <input id="searchInput" name="q" type="text" placeholder="Search...">
   <input type="submit" value="Search">
   <button type="button" id="clearSearch" hx-trigger="click">Clear</button>
@@ -21,7 +21,24 @@
 <div id="results">
   <!-- The search results will be displayed here -->
   {% include 'serach_results.html' %}
-</div>
+</div> {% endcomment %}
+
+
+<form action="{% url 'search_results' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+  <input type="submit" value="Search">
+</form>
+
+{% block content %}
+  <ul>
+    {% for blog in blogs %}
+      <li>
+        <a href="{% url 'blog_detail' pk=blog.pk %}">{{ blog.title }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
 
 <script>
   document.getElementById("clearSearch").addEventListener("click", function() {
