@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mon Titre{% endblock %}</title>
+    {% comment %} <link rel="stylesheet" href="{% url 'css/style.css' %}"> {% endcomment %}
+  {% comment %} <script src="{% static 'js/htmx.min.js' %}" defer></script> {% endcomment %}
+</head>
+<body>
+    <nav>
+        
+    </nav>
+
+    <div class="content">
+        {% block content %}
+            
+        {% endblock %}
+    </div>
+
+    <footer>
+        
+    </footer>
+</body>
+</html>

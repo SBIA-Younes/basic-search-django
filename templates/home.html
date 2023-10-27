@@ -1,53 +1,43 @@
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-  {% comment %} <link rel="stylesheet" href="{% url 'css/style.css' %}"> {% endcomment %}
-  <script src="{% static 'js/htmx.min.js' %}" defer></script>
-</head>
-<body>
-  <h1><a href='{% url "homme" %}'>Home Page</a></h1>
-
-{% comment %} <form id="searchForm" hx-get="{% url 'search_results' %}" hx-target="#results" hx-swap="outerHTML" hx-trigger="submit">
-  <input id="searchInput" name="q" type="text" placeholder="Search...">
-  <input type="submit" value="Search">
-  <button type="button" id="clearSearch" hx-trigger="click">Clear</button>
-</form>
-
-<div id="results">
-  <!-- The search results will be displayed here -->
-  {% include 'serach_results.html' %}
-</div> {% endcomment %}
-
-
-<form action="{% url 'search_results' %}" method="get">
-  <input name="q" type="text" placeholder="Search...">
-  <input type="submit" value="Search">
-</form>
-
+{% extends 'base.html' %}
+{% block title %}Home Page{% endblock %}
 {% block content %}
-  <ul>
-    {% for blog in blogs %}
-      <li>
-        <a href="{% url 'blog_detail' pk=blog.pk %}">{{ blog.title }}</a>
-      </li>
-    {% endfor %}
-  </ul>
+    
+    <h1><a href='{% url "home" %}'>Home Page</a></h1>
+
+    <form action="{% url 'search_results' %}" method="get">
+        <input name="q" type="text" placeholder="Search...">
+        <input type="submit" value="Search">
+    </form>
+
+  {% block Results %}
+    <ul>
+        {% for blog in blogs %}
+            <li>
+                <a href="{% url 'blog_detail' pk=blog.pk %}">{{ blog.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+     <!-- Pagination -->
+     {% if page_obj.paginator.num_pages > 1 %}
+     <div class="pagination">
+         <span class="step-links">
+             {% if page_obj.has_previous %}
+                 <a href="?page=1">&laquo; first</a>
+                 <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+             {% endif %}
+
+             <span class="current">
+                 Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+             </span>
+
+             {% if page_obj.has_next %}
+                 <a href="?page={{ page_obj.next_page_number }}">next</a>
+                 <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+             {% endif %}
+         </span>
+     </div>
+ {% endif %}
+  <!-- END Pagination -->
+  {% endblock Results %}
 {% endblock %}
-
-
-<script>
-  document.getElementById("clearSearch").addEventListener("click", function() {
-    document.getElementById("searchInput").value = "";
-    document.getElementById("searchForm").submit();
-  });
-</script>
-
-
-
-</body>
-</html>
